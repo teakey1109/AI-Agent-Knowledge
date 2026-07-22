@@ -1,0 +1,28 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Mac
+.DS_Store
+
+# Log files
+*.log
+logs/
+
+# Application
+application-local.yml
+application-dev.yml
+application-prod.yml
+
+# Upload files
+uploads/
+data/
