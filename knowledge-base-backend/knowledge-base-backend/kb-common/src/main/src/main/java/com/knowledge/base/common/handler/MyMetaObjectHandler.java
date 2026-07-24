@@ -26,7 +26,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
 
         // 获取当前用户 ID
-        Long userId = UserContextUtil.getCurrentUserId();
+        Long userId = UserContextUtil.getUserId();
         if (userId == null) {
             this.strictInsertFill(metaObject, "createBy", Long.class, userId);
             this.strictInsertFill(metaObject, "updateBy", Long.class, userId);
@@ -39,7 +39,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
          this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
 
          // 获取当前用户 ID
-        Long userId = UserContextUtil.getCurrentUserId();
+        Long userId = UserContextUtil.getUserId();
         if (userId != null) {
             this.strictUpdateFill(metaObject, "updateBy", Long.class, userId);
         }
