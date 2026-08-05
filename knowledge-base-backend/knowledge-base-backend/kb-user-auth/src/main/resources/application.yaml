@@ -47,3 +47,7 @@ knife4j:
   setting:
     language: zh_cn
   production: false
+
+logging:
+  level:
+    org.springframework.security: DEBUG
