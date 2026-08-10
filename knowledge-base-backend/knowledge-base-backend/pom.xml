@@ -38,7 +38,7 @@
 <!--    <module>kb-ai</module>-->
 <!--    <module>kb-graph</module>-->
 <!--    <module>kb-statistics</module>-->
-<!--    <module>kb-foundation</module>-->
+    <module>kb-foundation</module>
     <module>kb-common</module>
   </modules>
   <dependencyManagement>

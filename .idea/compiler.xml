@@ -13,6 +13,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="kb-common" />
         <module name="kb-user-auth" />
+        <module name="kb-foundation" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,6 +23,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="kb-common" options="-parameters" />
+      <module name="kb-foundation" options="-parameters" />
       <module name="kb-user-auth" options="-parameters" />
       <module name="knowledge-base-backend" options="" />
     </option>
