@@ -1,8 +1,11 @@
 package com.knowledge.base.common.config;
 
+import cn.hutool.core.lang.generator.SnowflakeGenerator;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
+import com.knowledge.base.common.utils.SnowflakeIdGenerator;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -75,4 +78,20 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableLogic
     private Integer deleted;
+
+    /**
+     * 乐观锁版本号
+     */
+    @Version
+    private Integer version;
+
+    /**
+     * 插入前自动填充 ID
+     */
+    public void preInsert() {
+        if (this.id == null) {
+            this.id = SnowflakeIdGenerator.getInstance().nextId();
+        }
+    }
+
 }
