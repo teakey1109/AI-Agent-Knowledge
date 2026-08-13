@@ -21,5 +21,5 @@ public interface OperationLogMapper extends BaseMapper<OperationLog> {
      * @return 删除数量
      */
     @Delete("DELETE FROM kb_operation_log WHERE created_at < #{beforeDate}")
-    int deleteBeforeData(@Param("beforeDate") String beforeDate);
+    int deleteBeforeDate(@Param("beforeDate") String beforeDate);
 }
