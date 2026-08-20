@@ -11,9 +11,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="kb-foundation" />
+        <module name="kb-document" />
         <module name="kb-common" />
         <module name="kb-user-auth" />
-        <module name="kb-foundation" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -23,6 +24,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="kb-common" options="-parameters" />
+      <module name="kb-document" options="-parameters" />
       <module name="kb-foundation" options="-parameters" />
       <module name="kb-user-auth" options="-parameters" />
       <module name="knowledge-base-backend" options="" />
