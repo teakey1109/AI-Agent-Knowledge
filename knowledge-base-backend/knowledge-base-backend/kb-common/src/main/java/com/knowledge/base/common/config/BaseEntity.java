@@ -66,7 +66,7 @@ public abstract class BaseEntity implements Serializable {
     private Long createBy;
 
     /**
-     * 更新人ID
+     * 更新人 ID
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
