@@ -1,6 +1,5 @@
 package com.knowledge.base.common.config;
 
-import cn.hutool.core.lang.generator.SnowflakeGenerator;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
