@@ -52,20 +52,29 @@ CREATE TABLE `kb_category` (
                                KEY `idx_parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文档分类表';
 
-CREATE TABLE `tb_tag` (
-                          `id` BIGINT NOT NULL COMMENT '标签ID',
-                          `tag_name` VARCHAR(50) NOT NULL COMMENT '标签名称',
-                          `tag_code` VARCHAR(50) DEFAULT NULL COMMENT '标签编码',
-                          `tag_type` VARCHAR(20) DEFAULT 'USER' COMMENT '标签类型：SYSTEM-系统标签，USER-用户标签',
-                          `color` VARCHAR(20) DEFAULT NULL COMMENT '标签颜色',
-                          `icon` VARCHAR(50) DEFAULT NULL COMMENT '标签图标',
-                          `doc_count` INT NOT NULL DEFAULT 0 COMMENT '文档数量',
-                          `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态：0-禁用，1-正常',
-                          `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                          `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                          `deleted` TINYINT NOT NULL DEFAULT 0 COMMENT '删除标识',
-                          PRIMARY KEY (`id`),
-                          UNIQUE KEY `uk_tag_code` (`tag_code`)
+CREATE TABLE `kb_tag` (
+    `id` BIGINT NOT NULL COMMENT '标签ID',
+    `tag_name` VARCHAR(50) NOT NULL COMMENT '标签名称',
+    `tag_code` VARCHAR(50) NOT NULL COMMENT '标签编码',
+    `category_id` BIGINT DEFAULT NULL COMMENT '所属分类ID',
+    `tag_type` TINYINT NOT NULL DEFAULT 1 COMMENT '标签类型：0-SYSTEM，1-用户标签',
+    `color` VARCHAR(20) DEFAULT NULL COMMENT '标签颜色',
+    `icon` VARCHAR(50) DEFAULT NULL COMMENT '标签图标',
+    `doc_count` INT NOT NULL DEFAULT 0 COMMENT '文档数量',
+    `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态：0-禁用，1-正常',
+    `deleted` TINYINT NOT NULL DEFAULT 0 COMMENT '删除标识',
+    `version` INT NOT NULL DEFAULT 0 COMMENT '版本号',
+    `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `create_by` BIGINT DEFAULT NULL COMMENT '创建人',
+    `update_by` BIGINT DEFAULT NULL COMMENT '更新人',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_tag_code` (`tag_code`),
+    KEY `idx_tag_name` (`tag_name`),
+    KEY `idx_category_id` (`category_id`),
+    KEY `idx_tag_type` (`tag_type`),
+    KEY `idx_status` (`status`),
+    KEY `idx_doc_count` (`doc_count`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='标签表';
 
 CREATE TABLE `tb_comment` (
@@ -129,5 +138,7 @@ CREATE TABLE `kb_document_tag` (
                                    `tag_id` BIGINT NOT NULL COMMENT '标签ID',
                                    `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                    PRIMARY KEY (`id`),
-                                   UNIQUE KEY `uk_document_tag` (`document_id`, `tag_id`)
+                                   UNIQUE KEY `uk_document_tag` (`document_id`, `tag_id`),
+                                   KEY `idx_document_id` (`document_id`),
+                                   KEY `idx_tag_id` (`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文档标签关联表';
