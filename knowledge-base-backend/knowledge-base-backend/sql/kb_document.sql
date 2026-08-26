@@ -100,7 +100,7 @@ CREATE TABLE `tb_comment` (
                               KEY `idx_parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='评论表';
 
-CREATE TABLE `tb_document_version` (
+CREATE TABLE `kb_document_version` (
                                        `id` BIGINT NOT NULL COMMENT '版本ID',
                                        `document_id` BIGINT NOT NULL COMMENT '文档ID',
                                        `version` INT NOT NULL COMMENT '版本号',

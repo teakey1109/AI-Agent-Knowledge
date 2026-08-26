@@ -14,10 +14,13 @@ import com.knowledge.base.document.dto.DocumentDTO;
 import com.knowledge.base.document.entity.Document;
 import com.knowledge.base.document.mapper.DocumentMapper;
 import com.knowledge.base.document.service.DocumentService;
+import com.knowledge.base.document.service.DocumentVersionService;
 import com.knowledge.base.document.vo.DocumentVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +51,9 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
 
     @Value("${file.upload.max-size:104857600}")
     private Long maxFileSize;
+    
+    @Autowired
+    private DocumentVersionService documentVersionService;
 
     /**
      * 创建文档
@@ -153,8 +159,35 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
         }
 
         int count = documentMapper.updateById(document);
+
+        // 自动创建版本
+        if (count > 0) {
+            // TODO: 从上下文获取当前用户 ID
+            Long userId = 1L;
+            String changeDescription = buildChangeDescription(existDocument, document);
+            documentVersionService.createVersion(documentDTO.getId(), changeDescription, userId);
+        }
+        
         return count > 0;
     }
+
+    /**
+     * 构建变更说明
+     */
+    private String buildChangeDescription(Document oldDocument, Document newDocument) {
+        List<String> changes = Lists.newArrayList();
+
+        if (!Objects.equals(oldDocument.getTitle(), newDocument.getTitle())) {
+            changes.add("标题变更");
+        }
+        if (!Objects.equals(oldDocument.getContent(), newDocument.getContent())) {
+            changes.add("内容更新");
+        }
+        if (!Objects.equals(oldDocument.getCategoryId(), newDocument.getCategoryId())) {
+            changes.add("分类调整");
+        }
+
+        return changes.isEmpty() ? "文档更新" : String.join("、", changes);    }
 
     /**
      * 删除文档
