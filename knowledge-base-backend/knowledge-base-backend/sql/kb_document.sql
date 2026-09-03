@@ -77,28 +77,43 @@ CREATE TABLE `kb_tag` (
     KEY `idx_doc_count` (`doc_count`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='标签表';
 
-CREATE TABLE `tb_comment` (
-                              `id` BIGINT NOT NULL COMMENT '评论ID',
-                              `document_id` BIGINT NOT NULL COMMENT '文档ID',
+-- 文档评论表
+DROP TABLE IF EXISTS `kb_comment`;
+CREATE TABLE `kb_comment` (
+                              `id` BIGINT(20) PRIMARY KEY COMMENT '评论 ID（雪花ID）',
+                              `document_id` BIGINT(20) NOT NULL COMMENT '文档 ID',
+                              `parent_id` BIGINT(20) COMMENT '父评论 ID',
+                              `root_id` BIGINT(20) COMMENT '根评论 ID',
                               `content` TEXT NOT NULL COMMENT '评论内容',
-                              `user_id` BIGINT NOT NULL COMMENT '评论用户ID',
-                              `user_name` VARCHAR(50) DEFAULT NULL COMMENT '用户姓名（冗余字段）',
-                              `user_avatar` VARCHAR(500) DEFAULT NULL COMMENT '用户头像（冗余字段）',
-                              `parent_id` BIGINT NOT NULL DEFAULT 0 COMMENT '父评论ID',
-                              `root_id` BIGINT NOT NULL DEFAULT 0 COMMENT '根评论ID',
-                              `reply_to_user_id` BIGINT DEFAULT NULL COMMENT '回复的用户ID',
-                              `reply_to_user_name` VARCHAR(50) DEFAULT NULL COMMENT '回复给谁（冗余字段）',
-                              `like_count` INT NOT NULL DEFAULT 0 COMMENT '点赞数',
-                              `reply_count` INT NOT NULL DEFAULT 0 COMMENT '回复数',
-                              `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态',
-                              `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                              `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                              `deleted` TINYINT NOT NULL DEFAULT 0 COMMENT '删除标识',
-                              PRIMARY KEY (`id`),
+                              `commenter_id` BIGINT(20) NOT NULL COMMENT '评论人 ID',
+                              `commenter_name` VARCHAR(50) COMMENT '评论人姓名',
+                              `commenter_avatar` VARCHAR(500) COMMENT '评论人头像',
+                              `reply_to_user_id` BIGINT(20) COMMENT '回复给谁（用户 ID）',
+                              `reply_to_user_name` VARCHAR(50) COMMENT '回复给谁（用户姓名）',
+                              `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态：0-隐藏，1-正常',
+                              `like_count` INT DEFAULT 0 COMMENT '点赞数',
+                              `reply_count` INT DEFAULT 0 COMMENT '回复数',
+                              `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                              `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                              `deleted` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '删除标记',
                               KEY `idx_document_id` (`document_id`),
-                              KEY `idx_user_id` (`user_id`),
-                              KEY `idx_parent_id` (`parent_id`)
+                              KEY `idx_parent_id` (`parent_id`),
+                              KEY `idx_root_id` (`root_id`),
+                              KEY `idx_commenter_id` (`commenter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='评论表';
+
+-- 点赞表
+DROP TABLE IF EXISTS `kb_like`;
+CREATE TABLE `kb_like` (
+                           `id` BIGINT(20) PRIMARY KEY COMMENT '点赞 ID',
+                           `target_id` BIGINT(20) NOT NULL COMMENT '目标 ID（文档或评论）',
+                           `target_type` TINYINT NOT NULL COMMENT '目标类型：1-文档，2-评论',
+                           `user_id` BIGINT(20) NOT NULL COMMENT '用户 ID',
+                           `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                           UNIQUE KEY `uk_target_user_type` (`target_id`, `user_id`, `target_type`),
+                           KEY `idx_target_id` (`target_id`),
+                           KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='点赞表';
 
 CREATE TABLE `kb_document_version` (
                                        `id` BIGINT NOT NULL COMMENT '版本ID',
