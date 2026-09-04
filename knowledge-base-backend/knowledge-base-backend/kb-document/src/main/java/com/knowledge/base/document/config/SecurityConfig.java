@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // 1. 只放行明确不需要认证的接口
-                        .requestMatchers("/documents/**", "/categories/**", "/tags/**", "/comments/**").permitAll()
+                        .requestMatchers("/documents/**", "/categories/**", "/tags/**", "/comments/**", "/document-reviews/**").permitAll()
 
                         // 2. OPTIONS 请求放行
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()

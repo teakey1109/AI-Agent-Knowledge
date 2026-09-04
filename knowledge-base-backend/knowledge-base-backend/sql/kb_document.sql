@@ -132,20 +132,22 @@ CREATE TABLE `kb_document_version` (
                                        KEY `idx_document_id` (`document_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文档版本表';
 
-CREATE TABLE `tb_document_review` (
-                                      `id` BIGINT NOT NULL COMMENT '审核ID',
-                                      `document_id` BIGINT NOT NULL COMMENT '文档ID',
-                                      `reviewer_id` BIGINT NOT NULL COMMENT '审核人ID',
+DROP TABLE IF EXISTS `kb_document_review`;
+CREATE TABLE `kb_document_review` (
+                                      `id` BIGINT(20) PRIMARY KEY COMMENT '审核ID',
+                                      `document_id` BIGINT(20) NOT NULL COMMENT '文档ID',
+                                      `reviewer_id` BIGINT(20) NOT NULL COMMENT '审核人ID',
                                       `reviewer_name` VARCHAR(50) DEFAULT NULL COMMENT '审核人姓名',
-                                      `review_result` INT NOT NULL COMMENT '审核结果：1-通过，2-驳回',
-                                      `review_comment` TEXT DEFAULT NULL COMMENT '审核意见',
-                                      `before_status` INT DEFAULT NULL COMMENT '审核前状态',
-                                      `reviewed_at` DATETIME DEFAULT NULL COMMENT '审核时间',
-                                      `review_round` INT NOT NULL DEFAULT 1 COMMENT '审核轮次',
+                                      `review_result` TINYINT NOT NULL COMMENT '审核结果：1-通过，2-驳回',
+                                      `review_comment` TEXT COMMENT '审核意见',
+                                      `before_status` TINYINT COMMENT '审核前状态',
+                                      `reviewed_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '审核时间',
+                                      `review_round` INT DEFAULT 1 COMMENT '审核轮次',
                                       `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                      PRIMARY KEY (`id`),
-                                      KEY `idx_document_id` (`document_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文档审核表';
+                                      KEY `idx_document_id` (`document_id`),
+                                      KEY `idx_reviewer_id` (`reviewer_id`),
+                                      KEY `idx_reviewed_at` (`reviewed_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文档审核记录表';
 
 CREATE TABLE `kb_document_tag` (
                                    `id` BIGINT NOT NULL COMMENT '主键ID',
