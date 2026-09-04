@@ -97,7 +97,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         Comment comment = new Comment();
         comment.setId(SnowflakeIdGenerator.getInstance().nextId());
         comment.setDocumentId(commentCreateDTO.getDocumentId());
-        comment.setParentId(commentCreateDTO.getParentId());
+        comment.setParentId(commentCreateDTO.getParentId() != null ? commentCreateDTO.getParentId() : 0L);
         comment.setRootId(rootId);
         comment.setContent(commentCreateDTO.getContent());
         comment.setCommenterId(userId);

@@ -224,7 +224,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
                 .icon(tag.getIcon())
                 .docCount(tag.getDocCount() != null ? tag.getDocCount() : 0)
                 .status(tag.getStatus())
-                .createdAt(tag.getCreateTime())
+                .createdAt(tag.getCreatedAt())
                 .build();
     }
 

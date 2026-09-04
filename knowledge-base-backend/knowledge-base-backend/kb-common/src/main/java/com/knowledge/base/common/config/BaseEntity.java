@@ -48,15 +48,15 @@ public abstract class BaseEntity implements Serializable {
      * 创建时间
      * 仅在插入（新增）数据时触发填充。
      */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    @TableField(value = "created_at", fill = FieldFill.INSERT)
+    private LocalDateTime createdAt;
 
     /**
      * 更新时间
      * 在插入和更新时都会触发填充。
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    @TableField(value = "updated_at", fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updatedAt;
 
     /**
      * 创建人 ID
@@ -77,12 +77,6 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableLogic
     private Integer deleted;
-
-    /**
-     * 乐观锁版本号
-     */
-    @Version
-    private Integer version;
 
     /**
      * 插入前自动填充 ID
